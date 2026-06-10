@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository purpose
 
-Internal engineering training programme run by KlusAI Labs S.R.L. (2026 cohort). The repo is a shared workspace where participants commit code and exercises produced during the programme.
+Internal engineering training programme run by KlusAI (2026 cohort). The repo is a shared workspace where participants commit code and exercises produced during the programme.
 
 ## Folder structure
 
