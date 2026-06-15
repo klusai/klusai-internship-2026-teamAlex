@@ -53,18 +53,18 @@ Tell the user which range you're using before continuing.
 
 Run two queries against the range in parallel:
 
-```bash
-# All merge commits — links to PRs
-git log $RANGE --merges --pretty=format:"%s|||%H"
+~~~bash
+# Use record/field separators so multi-line commit bodies remain parseable.
+# Record separator: 0x1e, field separator: 0x1f
+git log "$RANGE" --merges --pretty=format:"%s%x1f%H%x1e"
 
-# All non-merge commits — individual changes
-git log $RANGE --no-merges --pretty=format:"%s|||%b|||%H"
-```
+git log "$RANGE" --no-merges --pretty=format:"%s%x1f%B%x1f%H%x1e"
+~~~
 
-Each non-merge line: `subject|||body|||hash`
+Each non-merge record: `subject␟body␟hash␞` (US=0x1f, RS=0x1e)
 - `subject` → conventional commit header (e.g. `feat(auth): add OAuth2`)
-- `body` → may contain `BREAKING CHANGE:` text
-- `hash` → short SHA for traceability
+- `body` → full commit body; may contain `BREAKING CHANGE:` and newlines
+- `hash` → full SHA for traceability
 
 ---
 
