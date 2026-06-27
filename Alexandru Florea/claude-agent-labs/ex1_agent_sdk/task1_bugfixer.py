@@ -63,7 +63,7 @@ def render(message) -> None:
 
 async def main() -> None:
 	options = ClaudeAgentOptions(
-		allowed_tools=["Read", "Edit", "Glob"],
+		allowed_tools=["Read", "Edit", "Glob", "Write"],
 		permission_mode="acceptEdits",
 		cwd=str(HERE),
 		# TODO(task 1): try adding "Write" or removing "Edit" and watch how the
