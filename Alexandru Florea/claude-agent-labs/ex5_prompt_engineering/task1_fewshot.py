@@ -30,7 +30,11 @@ SYSTEM = (
 # TODO(task 1): fill this in with a handful of labeled examples (few-shot).
 # Format is up to you — e.g. lines like:  "Login throws a 500." -> bug
 # Start empty (zero-shot), record accuracy, then add examples and compare.
-FEWSHOT = ""
+FEWSHOT = """
+"Login throws a 500." -> bug
+"Can you add brightness button?" -> feature
+"Why did I get this email" -> question
+"""
 
 
 def classify(client: anthropic.Anthropic, text: str) -> str:

@@ -43,10 +43,8 @@ def single_pass(client: anthropic.Anthropic, diff: str) -> str:
 def split_into_chunks(diff: str) -> list[str]:
 	"""Split a unified diff into one chunk per file.
 
-	TODO(task 3): split `diff` on the per-file boundary. Each file section starts
-	with a line beginning 'diff --git'. Return a list of chunk strings, one per
-	file. (Hint: accumulate lines and start a new chunk each time you see
-	'diff --git'.)
+	Each file section starts with a line beginning 'diff --git'. We accumulate
+	lines and start a new chunk every time a new 'diff --git' header appears.
 	"""
 	chunks: list[str] = []
 	current: list[str] = []
@@ -68,9 +66,8 @@ def multi_pass(client: anthropic.Anthropic, diff: str) -> str:
 		print(f"  reviewing chunk {i}/{len(chunks)}")
 		chunk_reviews.append(ask(client, f"Review this single file's changes:\n\n{chunk}", max_tokens=800))
 
-	# TODO(task 3): synthesize the per-chunk reviews into one deduplicated report.
-	# Pass all chunk reviews to the model and ask it to merge them, drop duplicates,
-	# and rank by severity.
+	# Synthesis pass: hand all per-chunk reviews back to the model to merge,
+	# deduplicate, and rank by severity into a single report.
 	joined = "\n\n".join(f"### Chunk {i}\n{r}" for i, r in enumerate(chunk_reviews, 1))
 	return ask(
 		client,
