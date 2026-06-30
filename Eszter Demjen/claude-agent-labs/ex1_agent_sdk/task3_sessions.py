@@ -69,9 +69,11 @@ def manage_sessions(session_id: str) -> None:
 	# TODO(task 3): if the helpers exist, call them. Names/signatures may vary —
 	# adjust to match your SDK. The intended behavior:
 	rename_session(session_id, "favorite-number-demo")  # give it a human name
-	tag_session(session_id, TAG)                          # tag it
-	tagged = list_sessions(tag=TAG)                       # list by tag
-	print(f"\nsessions tagged {TAG!r}: {tagged}")
+        tag_session(session_id, TAG)                          # tag it
+        # list_sessions() has no `tag` filter param in this SDK version — filter client-side.
+        all_sessions = list_sessions()
+        tagged = [s for s in all_sessions if s.tag == TAG]
+        print(f"\nsessions tagged {TAG!r}: {tagged}")
 
 
 async def main() -> int:

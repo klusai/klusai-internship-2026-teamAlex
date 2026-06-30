@@ -22,7 +22,7 @@ import anthropic
 
 # Import the real tool functions so the test uses the SAME descriptions as the
 # server. Editing the docstrings in server.py changes the result here.
-from server import search_customers, search_orders
+from server import search_customers, search_orders, search_by_email
 
 # Disambiguation is a great place to compare models — swap this and re-run.
 MODEL = "claude-haiku-4-5"
@@ -48,8 +48,9 @@ def _tool_schema(func, param_name: str) -> dict:
 
 
 TOOLS = [
-	_tool_schema(search_orders, "order_id"),
-	_tool_schema(search_customers, "name"),
+    _tool_schema(search_orders, "order_id"),
+    _tool_schema(search_customers, "name"),
+    _tool_schema(search_by_email, "email"),
 ]
 
 

@@ -28,10 +28,11 @@ VAGUE_PROMPT = "Review this diff and tell me about any problems.\n\n{diff}"
 # so the review reliably catches the three planted issues (and anything else worth
 # flagging). Be specific — explicit criteria are the whole point.
 CRITERIA = [
-	"Security: flag any SQL built by string concatenation / f-strings (injection risk).",
-	# TODO: add a criterion about exception handling (bare except / except: pass).
-	# TODO: add a criterion about password hashing (unsalted / fast hashes like MD5).
-	# TODO: add any other criteria you think a reviewer should always apply.
+    "Security: flag any SQL built by string concatenation / f-strings (injection risk).",
+    "Exception handling: flag any bare 'except:' or 'except: pass' that silently swallows errors without logging or re-raising.",
+    "Password hashing: flag any use of MD5 or SHA1 for hashing passwords or secrets; require bcrypt/argon2/scrypt with a salt.",
+    "Error visibility: flag functions that return a success value (e.g. True) even when an exception was caught — callers can't detect failures.",
+    "Undefined names: flag references to names not imported in the file (e.g. hashlib used in utils.py without an import).",
 ]
 
 EXPLICIT_PROMPT = (

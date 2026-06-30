@@ -23,14 +23,16 @@ from claude_agent_sdk import ClaudeAgentOptions, query
 HERE = Path(__file__).parent
 
 PROMPT = (
-	"Two files in this project have bugs.\n"
-	"1. buggy/utils.py — calculate_average crashes on an empty list; get_user_name "
-	"crashes on a missing 'name' key or a None user.\n"
-	"2. app/payments.py — make_token uses unsalted MD5; charge() does not validate "
-	"that the amount is positive.\n\n"
-	"Find them with Glob/Read and fix them with Edit. Make calculate_average return "
-	"0.0 for an empty list, make get_user_name handle missing/None safely, and add a "
-	"positive-amount check to charge(). Keep changes minimal."
+        "Two files in this project have bugs.\n"
+        "1. buggy/utils.py — calculate_average crashes on an empty list; get_user_name "
+        "crashes on a missing 'name' key or a None user.\n"
+        "2. app/payments.py — make_token uses unsalted MD5; charge() does not validate "
+        "that the amount is positive.\n\n"
+        "Find them with Glob/Read and fix them with Edit. Make calculate_average return "
+        "0.0 for an empty list, make get_user_name handle missing/None safely, add a "
+        "positive-amount check to charge(), and fix make_token to use a salted or keyed "
+        "hash (e.g. HMAC-SHA256 with a secret key) instead of plain unsalted MD5. Fix all "
+        "four bugs. Keep changes minimal."
 )
 
 

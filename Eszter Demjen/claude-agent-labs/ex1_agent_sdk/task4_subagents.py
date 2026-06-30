@@ -54,15 +54,19 @@ TEST_WRITER = AgentDefinition(
 )
 
 PARENT_PROMPT = (
-	"Coordinate a review of this project.\n"
-	"1. Delegate to the 'security-reviewer' subagent to find issues in "
-	"app/payments.py and buggy/utils.py.\n"
-	"2. Delegate to the 'test-writer' subagent to write and run tests for those "
-	"issues.\n"
-	"3. Stitch their outputs into ONE report with two sections: 'Findings' and "
-	"'Tests', and a final verdict line.\n"
-	"You (the parent) own delegation via the Task tool; the subagents do not "
-	"delegate further."
+        "Coordinate a review of this project.\n"
+        "IMPORTANT: only look at files inside this exact directory and its subfolders: "
+        f"{HERE}. Do not search, read, or write files outside this directory "
+        "(in particular, ignore any other teammates' project folders that may exist "
+        "elsewhere in this repo).\n"
+        "1. Delegate to the 'security-reviewer' subagent to find issues in "
+        "app/payments.py and buggy/utils.py within this directory only.\n"
+        "2. Delegate to the 'test-writer' subagent to write and run tests for those "
+        "issues, with tests written inside this directory only.\n"
+        "3. Stitch their outputs into ONE report with two sections: 'Findings' and "
+        "'Tests', and a final verdict line.\n"
+        "You (the parent) own delegation via the Task tool; the subagents do not "
+        "delegate further."
 )
 
 
