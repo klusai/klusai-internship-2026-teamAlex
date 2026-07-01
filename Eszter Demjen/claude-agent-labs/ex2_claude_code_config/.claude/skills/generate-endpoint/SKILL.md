@@ -3,15 +3,15 @@ name: generate-endpoint
 description: Scaffold a new REST endpoint (route + handler + types) from a short spec. Use when the user asks to add an API endpoint to the backend.
 # TODO(task 4): this skill must run in an isolated, forked context so its work
 # does not pollute the main conversation. Set the right value:
-context: fork
+context:           # TODO: fill in (hint: one word — the forked-context mode)
 # TODO(task 4): this skill may ONLY read and write files. Bash must be blocked,
 # so it can never run shell commands. Fill in the allow-list:
-allowed-tools: [Read, Write]
+allowed-tools:     # TODO: fill in (hint: a two-item list of tool names)
 ---
 
 # generate-endpoint
 
-Scaffold a new REST endpoint from a one-line spec.	
+Scaffold a new REST endpoint from a one-line spec.
 
 ## When to use
 

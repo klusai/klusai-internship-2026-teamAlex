@@ -30,14 +30,7 @@ SYSTEM = (
 # TODO(task 1): fill this in with a handful of labeled examples (few-shot).
 # Format is up to you — e.g. lines like:  "Login throws a 500." -> bug
 # Start empty (zero-shot), record accuracy, then add examples and compare.
-FEWSHOT = """
-"The app crashes when I upload a file over 10 MB." -> bug
-"Dates are displayed in MM/DD but my region uses DD/MM." -> bug
-"Please add a bulk-delete option to the dashboard." -> feature
-"The onboarding wizard feels clunky and takes too many steps." -> feature
-"How do I export my data to CSV?" -> question
-"What happens to my data if I cancel my subscription?" -> question
-"""
+FEWSHOT = ""
 
 
 def classify(client: anthropic.Anthropic, text: str) -> str:

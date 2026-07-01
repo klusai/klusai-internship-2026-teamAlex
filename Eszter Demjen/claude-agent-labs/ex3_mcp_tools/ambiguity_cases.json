@@ -11,8 +11,5 @@
     {"id": 8, "prompt": "I need the record for 4521", "expected_tool": "search_orders", "note": "AMBIGUOUS: a bare number could be an order id or a customer account; gold treats unprefixed numbers as order ids"},
     {"id": 9, "prompt": "Search for Smith", "expected_tool": "search_customers", "note": "a surname, not an id"},
     {"id": 10, "prompt": "Find the order from Wayne Enterprises", "expected_tool": "search_customers", "note": "AMBIGUOUS: wants an order, but only gives a company name. You can't call search_orders without an id, so resolve the customer first"}
-{"id": 11, "prompt": "Find the customer with email john.doe@acme.com", "expected_tool": "search_by_email", "note": "clear email address with @ — should not go to search_customers"},
-{"id": 12, "prompt": "Get the record for user@globex.com", "expected_tool": "search_by_email", "note": "word 'record' like case 8 but has @ so it's an email not an order id"},
-{"id": 13, "prompt": "Look up jane.doe", "expected_tool": "search_customers", "note": "AMBIGUOUS: looks like an email local part but no @, default to search_customers per our stance"}
   ]
 }
