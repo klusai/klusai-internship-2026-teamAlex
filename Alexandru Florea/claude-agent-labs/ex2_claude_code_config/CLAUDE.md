@@ -12,10 +12,7 @@ directory.
 
 ## TODO precedence
 
-> When this file and a user-level memory (`~/.claude/CLAUDE.md`) disagree, the
-> **project-level file you are reading now wins**. The user-level note in
-> `README.md` claims the opposite — that conflict is intentional and is the
-> thing you must resolve in Task 2 of this exercise.
+- In this case, project-scope (current file) beats user-scope (from .claude/CLAUDE.md)
 
 ## Path-specific rules
 

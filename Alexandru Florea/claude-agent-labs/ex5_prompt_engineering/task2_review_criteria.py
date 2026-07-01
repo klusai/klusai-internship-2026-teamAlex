@@ -24,14 +24,17 @@ HERE = Path(__file__).parent
 
 VAGUE_PROMPT = "Review this diff and tell me about any problems.\n\n{diff}"
 
-# TODO(task 2): complete the criteria checklist. One item is seeded; add the rest
-# so the review reliably catches the three planted issues (and anything else worth
-# flagging). Be specific — explicit criteria are the whole point.
 CRITERIA = [
-	"Security: flag any SQL built by string concatenation / f-strings (injection risk).",
-	# TODO: add a criterion about exception handling (bare except / except: pass).
-	# TODO: add a criterion about password hashing (unsalted / fast hashes like MD5).
-	# TODO: add any other criteria you think a reviewer should always apply.
+	"Security: flag any SQL built by string concatenation / f-strings (injection risk). "
+	"Parameterized queries (`?` placeholders) are the only acceptable form.",
+	"Error handling: flag any bare `except:` or `except: pass` that swallows errors "
+	"without logging or re-raising; the exception type should be named and handled.",
+	"Password/credential hashing: flag unsalted or fast hashes (MD5, SHA-1, plain "
+	"SHA-256) used for passwords; require a salted, slow KDF (bcrypt, argon2, pbkdf2).",
+	"Secrets/PII: flag any secret, token, or API key that is logged, hashed weakly, or "
+	"otherwise mishandled.",
+	"Input validation: flag user-controlled values used unvalidated to build queries, "
+	"file paths, or shell commands (e.g. column names interpolated into SQL).",
 ]
 
 EXPLICIT_PROMPT = (

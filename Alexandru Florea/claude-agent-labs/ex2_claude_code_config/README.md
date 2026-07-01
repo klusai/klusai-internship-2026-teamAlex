@@ -40,6 +40,7 @@ is deciding — and documenting — which one Claude should follow here, and why
 1. **Read the hierarchy.** Open `CLAUDE.md` and both files in `.claude/rules/`.
    Write down, in your own words, the order of precedence between: enterprise
    policy → project `CLAUDE.md` → user `~/.claude/CLAUDE.md` → path-specific rules.
+   enerprize poicty -> path-specfic rules -> project -> user
 
 2. **Resolve the conflict.** Tabs vs. 4 spaces. State which one applies *in this
    project* and the rule that decides it. (Hint: more-specific / project scope beats

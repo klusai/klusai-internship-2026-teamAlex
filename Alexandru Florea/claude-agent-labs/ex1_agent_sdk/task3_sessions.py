@@ -70,7 +70,7 @@ def manage_sessions(session_id: str) -> None:
 	# adjust to match your SDK. The intended behavior:
 	rename_session(session_id, "favorite-number-demo")  # give it a human name
 	tag_session(session_id, TAG)                          # tag it
-	tagged = list_sessions(tag=TAG)                       # list by tag
+	tagged = [session for session in list_sessions() if session.tag == TAG]                     # list by tag
 	print(f"\nsessions tagged {TAG!r}: {tagged}")
 
 

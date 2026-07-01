@@ -78,17 +78,37 @@ async def main() -> int:
 		permission_mode="acceptEdits",
 		cwd=str(HERE),
 	)
+	agent_by_task: dict[str, str] = {}        # Task call id -> subagent name
+	tools_used: dict[str, set[str]] = {}      # subagent name -> tools it called
+
 	async for message in query(prompt=PARENT_PROMPT, options=options):
 		kind = type(message).__name__
 		if kind == "AssistantMessage":
+			# Who emitted this? Parent (parent_tool_use_id is None) or a subagent?
+			owner = agent_by_task.get(getattr(message, "parent_tool_use_id", None), "parent")
 			for block in getattr(message, "content", []):
 				btype = type(block).__name__
 				if btype == "TextBlock":
 					print(block.text)
 				elif btype == "ToolUseBlock":
-					print(f"[delegate] {block.name} -> {block.input}")
+					# This SDK streams the delegation tool as "Agent"; the parent's
+					# allow-list names it "Task". Match both.
+					if block.name in ("Task", "Agent"):
+						# Parent delegating: map this call id to the subagent it spawns.
+						sub = block.input.get("subagent_type", "?")
+						agent_by_task[block.id] = sub
+						print(f"[delegate] -> {sub}")
+					else:
+						# A tool call by whoever owns this message.
+						tools_used.setdefault(owner, set()).add(block.name)
+						print(f"[{owner}] {block.name}")
 		elif kind == "ResultMessage":
 			print(f"[done] cost_usd={getattr(message, 'total_cost_usd', None)}")
+
+	# Per-subagent tool breakdown — the answer to "which tools did each one use".
+	print("\n=== tools used per agent ===")
+	for agent, tools in sorted(tools_used.items()):
+		print(f"  {agent}: {sorted(tools)}")
 	return 0
 
 

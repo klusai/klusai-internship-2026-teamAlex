@@ -23,7 +23,14 @@ import json
 import sys
 from pathlib import Path
 
-from claude_agent_sdk import ClaudeAgentOptions, query
+from claude_agent_sdk import (
+	ClaudeAgentOptions,
+	ClaudeSDKError,
+	CLIJSONDecodeError,
+	CLINotFoundError,
+	ProcessError,
+	query,
+)
 
 # A path that does not exist — the agent will try to read it and fail.
 MISSING_PATH = "does/not/exist/nowhere.py"
@@ -37,6 +44,7 @@ async def run() -> dict:
 		"ok": False,
 		"error_type": None,
 		"error": None,
+		"exit_code": None,
 		"turns_seen": 0,
 		"cost_usd": None,
 		"session_id": None,
@@ -63,9 +71,24 @@ async def run() -> dict:
 				if record["cost_usd"] is not None and record["cost_usd"] > COST_CEILING_USD:
 					record["over_budget"] = True
 		record["ok"] = not record["over_budget"]
-	except Exception as exc:  # noqa: BLE001 — task: collapse ANY failure to one line
-		# TODO(task 2): decide which exception types are worth distinguishing
-		# (e.g. CLINotFoundError vs. process errors) instead of catching them all.
+	except CLINotFoundError as exc:
+		# The `claude` CLI isn't on PATH — most common setup failure.
+		record["error_type"] = type(exc).__name__
+		record["error"] = f"{exc} — is the Claude Code CLI installed and on PATH?"
+	except ProcessError as exc:
+		# CLI started but exited non-zero; surface the exit code + stderr.
+		record["error_type"] = type(exc).__name__
+		record["error"] = str(exc)
+		record["exit_code"] = exc.exit_code
+	except CLIJSONDecodeError as exc:
+		# CLI produced output the SDK couldn't parse.
+		record["error_type"] = type(exc).__name__
+		record["error"] = str(exc)
+	except ClaudeSDKError as exc:
+		# Any other SDK-level failure (e.g. a non-CLINotFound connection error).
+		record["error_type"] = type(exc).__name__
+		record["error"] = str(exc)
+	except Exception as exc:  # noqa: BLE001 — final backstop: never leak a traceback
 		record["error_type"] = type(exc).__name__
 		record["error"] = str(exc)
 

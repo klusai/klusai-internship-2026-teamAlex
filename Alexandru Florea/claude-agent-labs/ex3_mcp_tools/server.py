@@ -65,14 +65,13 @@ def make_error(category: str, message: str) -> dict:
 
 @mcp.tool()
 def search_orders(order_id: str) -> dict:
-	"""TODO(task 1): rewrite this description so the model only picks this tool
-	when the user is identifying a specific ORDER BY ITS ID.
+	"""Used when there is an order referenced by its id (order_id is an order identifier,
+	digits or a prefixed code like 'ORD-5567'). IT IS NOT for looking up a costumer by name.
 
-	Right now this description is vague on purpose. Make it crisp: say that
-	`order_id` is an order identifier (digits, or a prefixed code like `ORD-5567`),
-	give an example, and say what this tool is NOT for (it is not for looking up a
-	customer by name).
+	
 	"""
+	if not order_id or not order_id.strip():
+		return make_error("invalid_input", "order_id must be a non-empty order identifier.")
 	order = _ORDERS.get(order_id)
 	if order is None:
 		return make_error("not_found", f"No order with id {order_id!r}.")
@@ -81,12 +80,8 @@ def search_orders(order_id: str) -> dict:
 
 @mcp.tool()
 def search_customers(name: str) -> dict:
-	"""TODO(task 1): rewrite this description so the model only picks this tool
-	when the user is identifying a CUSTOMER BY NAME.
-
-	Make it crisp: say that `name` is a person or company name (free text), give an
-	example, and say what this tool is NOT for (it is not for looking up an order by
-	its id).
+	"""Name is a person/company name (free text). It is for looking up a costumer by name.
+	It's not for looking up an order by order id.
 	"""
 	customer = _CUSTOMERS.get(name.strip().lower())
 	if customer is None:
