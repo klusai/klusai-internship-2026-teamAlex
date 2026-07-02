@@ -29,9 +29,9 @@ VAGUE_PROMPT = "Review this diff and tell me about any problems.\n\n{diff}"
 # flagging). Be specific — explicit criteria are the whole point.
 CRITERIA = [
 	"Security: flag any SQL built by string concatenation / f-strings (injection risk).",
-	# TODO: add a criterion about exception handling (bare except / except: pass).
-	# TODO: add a criterion about password hashing (unsalted / fast hashes like MD5).
-	# TODO: add any other criteria you think a reviewer should always apply.
+	"Exception handling: flag bare except, especially except: pass, because it hides failures and makes errors impossible to diagnose.",
+	"Password hashing / cryptography: flag unsalted or fast hashes such as MD5 or SHA1, especially for passwords, tokens, API keys, or secret fingerprints.",
+	"Correctness: flag newly introduced runtime errors, missing imports, or code paths that silently return success after failure.",
 ]
 
 EXPLICIT_PROMPT = (

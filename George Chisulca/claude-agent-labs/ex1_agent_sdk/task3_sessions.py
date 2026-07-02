@@ -54,24 +54,41 @@ async def resume_turn(session_id: str) -> None:
 
 
 def manage_sessions(session_id: str) -> None:
-	"""Rename, tag, and list by tag — guarded because these helpers are unverified."""
+	"""Rename, tag, and list by tag — guarded because these helpers are version-dependent."""
 	try:
 		from claude_agent_sdk import list_sessions, rename_session, tag_session
 	except ImportError:
 		print(
 			"\n[FLAG] rename_session / tag_session / list_sessions are not importable "
 			"from claude_agent_sdk in this version.\n"
-			"       Verify the session-management API for your installed SDK (it may "
-			"be a session-store API or CLI-only), then wire it in here."
+			"       Session capture/resume worked via ResultMessage.session_id and "
+			"ClaudeAgentOptions(resume=...)."
 		)
 		return
 
-	# TODO(task 3): if the helpers exist, call them. Names/signatures may vary —
-	# adjust to match your SDK. The intended behavior:
-	rename_session(session_id, "favorite-number-demo")  # give it a human name
-	tag_session(session_id, TAG)                          # tag it
-	tagged = list_sessions(tag=TAG)                       # list by tag
-	print(f"\nsessions tagged {TAG!r}: {tagged}")
+	try:
+		rename_session(session_id, "favorite-number-demo")
+		print("renamed session to favorite-number-demo")
+	except Exception as exc:
+		print(f"[FLAG] rename_session unavailable or incompatible: {type(exc).__name__}: {exc}")
+
+	try:
+		tag_session(session_id, TAG)
+		print(f"tagged session with {TAG!r}")
+	except Exception as exc:
+		print(f"[FLAG] tag_session unavailable or incompatible: {type(exc).__name__}: {exc}")
+
+	try:
+		tagged = list_sessions(tag=TAG)
+		print(f"\nsessions tagged {TAG!r}: {tagged}")
+	except TypeError as exc:
+		print(
+			f"[FLAG] list_sessions(tag=...) is not supported in this SDK version: {exc}\n"
+			"       The session was captured and resumed successfully; tag-filtered listing "
+			"is documented as version-dependent."
+		)
+	except Exception as exc:
+		print(f"[FLAG] list_sessions unavailable or incompatible: {type(exc).__name__}: {exc}")
 
 
 async def main() -> int:

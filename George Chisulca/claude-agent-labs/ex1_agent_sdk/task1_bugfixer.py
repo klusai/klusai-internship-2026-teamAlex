@@ -29,8 +29,10 @@ PROMPT = (
 	"2. app/payments.py — make_token uses unsalted MD5; charge() does not validate "
 	"that the amount is positive.\n\n"
 	"Find them with Glob/Read and fix them with Edit. Make calculate_average return "
-	"0.0 for an empty list, make get_user_name handle missing/None safely, and add a "
-	"positive-amount check to charge(). Keep changes minimal."
+	"0.0 for an empty list, make get_user_name handle missing/None safely, replace "
+	"make_token's unsalted MD5 with a safer salted SHA-256/PBKDF2-style token, and "
+	"add a positive-amount check to charge(). Do not leave hashlib.md5 in make_token. "
+	"Keep changes minimal."
 )
 
 
