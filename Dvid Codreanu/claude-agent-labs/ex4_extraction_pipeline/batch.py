@@ -21,7 +21,7 @@ from anthropic.types.messages.batch_create_params import Request
 
 from schema import EXTRACT_TOOL, INVOICE_SCHEMA
 
-MODEL = "claude-opus-4-8"
+MODEL = "claude-haiku-4-5-20251001"
 HERE = Path(__file__).parent
 INVOICES = sorted((HERE / "invoices").glob("*.txt"))
 

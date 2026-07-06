@@ -51,6 +51,7 @@ TEST_WRITER = AgentDefinition(
 	),
 	tools=["Read", "Write", "Bash"],
 	model="sonnet",
+	permissionMode="bypassPermissions",  # allows Bash to run pytest without prompting
 )
 
 PARENT_PROMPT = (

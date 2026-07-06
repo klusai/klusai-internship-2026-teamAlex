@@ -66,8 +66,8 @@ async def main() -> None:
 		allowed_tools=["Read", "Edit", "Glob"],
 		permission_mode="acceptEdits",
 		cwd=str(HERE),
-		# TODO(task 1): try adding "Write" or removing "Edit" and watch how the
-		# agent's options change (e.g. it can no longer modify files).
+		# Stretch goal: swap "Edit" for "Write" and watch what changes — the agent
+		# can no longer do targeted in-place edits, only full file rewrites.
 	)
 	async for message in query(prompt=PROMPT, options=options):
 		render(message)

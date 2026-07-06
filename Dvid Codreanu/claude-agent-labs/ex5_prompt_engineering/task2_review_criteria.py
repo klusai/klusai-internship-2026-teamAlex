@@ -18,7 +18,7 @@ from pathlib import Path
 
 import anthropic
 
-MODEL = "claude-opus-4-8"
+MODEL = "claude-sonnet-4-6"
 RUNS = 3
 HERE = Path(__file__).parent
 
@@ -29,9 +29,9 @@ VAGUE_PROMPT = "Review this diff and tell me about any problems.\n\n{diff}"
 # flagging). Be specific — explicit criteria are the whole point.
 CRITERIA = [
 	"Security: flag any SQL built by string concatenation / f-strings (injection risk).",
-	# TODO: add a criterion about exception handling (bare except / except: pass).
-	# TODO: add a criterion about password hashing (unsalted / fast hashes like MD5).
-	# TODO: add any other criteria you think a reviewer should always apply.
+	"Exception handling: flag any bare `except:` or `except: pass` that silently swallows errors — always catch specific exceptions and log or re-raise.",
+	"Cryptography: flag any use of MD5 or SHA-1 for passwords, tokens, or secrets — use bcrypt, scrypt, or Argon2 instead; MD5 for non-secret fingerprinting is lower severity but still worth noting.",
+	"Error visibility: flag functions that always return a success value (e.g. `return True`) even after swallowing an exception — callers cannot detect failure.",
 ]
 
 EXPLICIT_PROMPT = (
