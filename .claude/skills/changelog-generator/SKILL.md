@@ -73,7 +73,7 @@ Each non-merge record: `subject␟body␟hash␞` (US=0x1f, RS=0x1e)
 This step only runs if `GITHUB_TOKEN` is set in the environment. If not, skip to Step 4 in commit-only mode.
 
 ### Why
-Merge commit messages carry almost no information (`Merge pull request #42 from feature/auth`). The PR description, written using the `pr-description` skill, contains the human-readable summary, motivation, and any breaking changes that Person2 required to be documented before approving.
+Merge commit messages carry almost no information (`Merge pull request #42 from feature/auth`). The PR description, written using the `pr-description` skill, contains the human-readable summary, motivation, and any breaking changes that is required to be documented before approving.
 
 ### Extract PR numbers
 For each merge commit subject, extract the PR number:
@@ -191,7 +191,7 @@ Newest version always goes at the top.
 
 ## Breaking Change Convention (enforced by code-review skill)
 
-The `code-review` skill (Person2) uses three severity levels:
+The `code-review` skill uses three severity levels:
 
 | Severity | Verdict | Effect |
 |---|---|---|
@@ -199,15 +199,9 @@ The `code-review` skill (Person2) uses three severity levels:
 | `suggestion` | "Safe to merge after suggestion" | PR can merge |
 | `nit` | "Safe to merge" | PR can merge |
 
-When Person2 identifies a breaking change, they raise it as **blocking**. The verdict is "Block merge until fixed" — the PR is held until Person1 updates the commit footer (`BREAKING CHANGE:`) or Person3 updates the PR description with the breaking change details.
+When code-review skill identifies a breaking change, they raise it as **blocking**. The verdict is "Block merge until fixed" — the PR is held until the commit footer is updated (`BREAKING CHANGE:`) or the PR description is updated with the breaking change details.
 
-**This means:** any commit that reaches main has already passed Person2's gate. If a breaking change exists, it is documented either in the commit footer or the PR description before the merge happened. The changelog reads from those sources — it does not need to fetch review comments.
-
----
-
-## Future: pr-description skill
-
-The `pr-description` skill does not yet exist in this repo. When it is built, ensure its output uses consistent section headers (Summary, Breaking Changes, What Changed) so Step 3's mapping works without modification. The skill is already designed for it.
+**This means:** any commit that reaches main has already passed code-review's gate. If a breaking change exists, it is documented either in the commit footer or the PR description before the merge happened. The changelog reads from those sources — it does not need to fetch review comments.
 
 ---
 
