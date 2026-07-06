@@ -24,7 +24,7 @@ ex3_mcp_tools/
 
 ```bash
 pip install mcp anthropic
-export ANTHROPIC_API_KEY=sk-ant-...
+export ANTHROPIC_API_KEY=sk-ant-...   # set your key here, never commit it
 ```
 
 ## Tasks

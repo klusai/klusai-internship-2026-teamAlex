@@ -20,7 +20,7 @@ import jsonschema
 
 from schema import EXTRACT_TOOL, INVOICE_SCHEMA
 
-MODEL = "claude-opus-4-8"
+MODEL = "claude-haiku-4-5-20251001"
 MAX_ATTEMPTS = 3
 
 SYSTEM = (

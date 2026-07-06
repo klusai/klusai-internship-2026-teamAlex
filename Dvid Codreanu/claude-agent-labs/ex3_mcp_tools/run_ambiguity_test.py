@@ -9,7 +9,7 @@ in `server.py` to disambiguate, re-run this, and watch accuracy climb.
 
 Setup:
     pip install mcp anthropic
-    export ANTHROPIC_API_KEY=sk-ant-...
+    export ANTHROPIC_API_KEY=sk-ant-...   # set your key, never commit it
     python run_ambiguity_test.py
 """
 

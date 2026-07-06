@@ -23,7 +23,15 @@ import json
 import sys
 from pathlib import Path
 
-from claude_agent_sdk import ClaudeAgentOptions, query
+from claude_agent_sdk import (
+    ClaudeAgentOptions,
+    CLIConnectionError,
+    CLIJSONDecodeError,
+    CLINotFoundError,
+    ClaudeSDKError,
+    ProcessError,
+    query,
+)
 
 # A path that does not exist — the agent will try to read it and fail.
 MISSING_PATH = "does/not/exist/nowhere.py"
@@ -63,9 +71,19 @@ async def run() -> dict:
 				if record["cost_usd"] is not None and record["cost_usd"] > COST_CEILING_USD:
 					record["over_budget"] = True
 		record["ok"] = not record["over_budget"]
-	except Exception as exc:  # noqa: BLE001 — task: collapse ANY failure to one line
-		# TODO(task 2): decide which exception types are worth distinguishing
-		# (e.g. CLINotFoundError vs. process errors) instead of catching them all.
+	except CLINotFoundError as exc:
+		record["error_type"] = "CLINotFoundError"
+		record["error"] = "Claude CLI not found on PATH — install it and re-run."
+	except CLIConnectionError as exc:
+		record["error_type"] = "CLIConnectionError"
+		record["error"] = str(exc)
+	except ProcessError as exc:
+		record["error_type"] = "ProcessError"
+		record["error"] = str(exc)
+	except CLIJSONDecodeError as exc:
+		record["error_type"] = "CLIJSONDecodeError"
+		record["error"] = str(exc)
+	except ClaudeSDKError as exc:
 		record["error_type"] = type(exc).__name__
 		record["error"] = str(exc)
 

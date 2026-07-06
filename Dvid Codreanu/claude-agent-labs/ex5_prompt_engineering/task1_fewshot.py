@@ -27,10 +27,17 @@ SYSTEM = (
 	"bug, feature, question. Reply with ONLY that single word, lowercase."
 )
 
-# TODO(task 1): fill this in with a handful of labeled examples (few-shot).
-# Format is up to you — e.g. lines like:  "Login throws a 500." -> bug
-# Start empty (zero-shot), record accuracy, then add examples and compare.
-FEWSHOT = ""
+# Few-shot examples: one clear case per class, plus one that leans ambiguous
+# to help the model understand the boundary between bug and feature.
+FEWSHOT = """\
+"The app crashes when I click Export. Stack trace attached." -> bug
+"Can you add a dark mode to the settings page?" -> feature
+"How do I reset my password?" -> question
+"Login returns a 500 error after the latest deploy." -> bug
+"Please support CSV export in addition to PDF." -> feature
+"What's the difference between the Pro and Team plans?" -> question
+"Uploads over 2 MB silently fail — no error shown." -> bug\
+"""
 
 
 def classify(client: anthropic.Anthropic, text: str) -> str:

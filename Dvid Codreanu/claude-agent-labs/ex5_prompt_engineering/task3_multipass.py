@@ -17,7 +17,7 @@ from pathlib import Path
 
 import anthropic
 
-MODEL = "claude-opus-4-8"
+MODEL = "claude-sonnet-4-6"
 HERE = Path(__file__).parent
 
 REVIEW_SYSTEM = (

@@ -65,14 +65,23 @@ def make_error(category: str, message: str) -> dict:
 
 @mcp.tool()
 def search_orders(order_id: str) -> dict:
-	"""TODO(task 1): rewrite this description so the model only picks this tool
-	when the user is identifying a specific ORDER BY ITS ID.
-
-	Right now this description is vague on purpose. Make it crisp: say that
-	`order_id` is an order identifier (digits, or a prefixed code like `ORD-5567`),
-	give an example, and say what this tool is NOT for (it is not for looking up a
-	customer by name).
 	"""
+	Use this tool when the user provides an order id — a bare number like "10432",
+	"88231", or "7741", or a prefixed code like "ORD-5567". The single argument
+	`order_id` must be that identifier string. Example: order_id="10432".
+
+	Bare numbers (no prefix, no company name) are always treated as order ids —
+	use this tool for them.
+
+	Do NOT use this tool when the user provides only a person's name or a company
+	name with no order id. You cannot search orders by name. If the user says
+	"find the order from Wayne Enterprises", you must call search_customers first
+	to resolve the customer, then use the order id from the result.
+
+	Do NOT use this tool for empty or missing ids — that is an invalid input.
+	"""
+	if not order_id or not order_id.strip():
+		return make_error("invalid_input", "order_id must not be empty.")
 	order = _ORDERS.get(order_id)
 	if order is None:
 		return make_error("not_found", f"No order with id {order_id!r}.")
@@ -81,12 +90,18 @@ def search_orders(order_id: str) -> dict:
 
 @mcp.tool()
 def search_customers(name: str) -> dict:
-	"""TODO(task 1): rewrite this description so the model only picks this tool
-	when the user is identifying a CUSTOMER BY NAME.
+	"""
+	Use this tool when the user provides a person's name or a company name —
+	strings like "Acme Corporation", "Jane Doe", or "Globex". The single argument
+	`name` is that name string. Example: name="Acme Corporation".
 
-	Make it crisp: say that `name` is a person or company name (free text), give an
-	example, and say what this tool is NOT for (it is not for looking up an order by
-	its id).
+	Also use this tool when the user mentions an order but only gives a company or
+	person name (e.g. "find the order from Wayne Enterprises") — you must resolve
+	the customer by name first before any order lookup is possible.
+
+	Do NOT use this tool when the user gives a bare number or an order code like
+	"10432" or "ORD-5567". Those are order ids, not customer names — use
+	search_orders for them.
 	"""
 	customer = _CUSTOMERS.get(name.strip().lower())
 	if customer is None:

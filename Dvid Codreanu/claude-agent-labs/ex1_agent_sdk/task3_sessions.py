@@ -65,13 +65,12 @@ def manage_sessions(session_id: str) -> None:
 			"be a session-store API or CLI-only), then wire it in here."
 		)
 		return
-
-	# TODO(task 3): if the helpers exist, call them. Names/signatures may vary —
-	# adjust to match your SDK. The intended behavior:
-	rename_session(session_id, "favorite-number-demo")  # give it a human name
-	tag_session(session_id, TAG)                          # tag it
-	tagged = list_sessions(tag=TAG)                       # list by tag
-	print(f"\nsessions tagged {TAG!r}: {tagged}")
+    #TODO(task 3): if the helpers exist, call them. Names/signatures may vary —
+	rename_session(session_id, "favorite-number-demo")
+	tag_session(session_id, TAG)
+	# list_sessions() returns all sessions; filter by .tag manually.
+	tagged = [s for s in list_sessions() if s.tag == TAG]
+	print(f"\nsessions tagged {TAG!r}: {[s.session_id for s in tagged]}")
 
 
 async def main() -> int:
